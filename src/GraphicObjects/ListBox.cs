@@ -47,9 +47,7 @@ namespace Crow
 		IList data;
 		int _selectedIndex;
 		string _itemTemplate;
-		int itemPerPage = 100;
-		MemoryStream templateStream = null;
-		Type templateBaseType = null;
+		int itemPerPage = 500;
 		Thread loadingThread = null;
 		volatile bool cancelLoading = false;
 
@@ -95,11 +93,6 @@ namespace Crow
 
 				_itemTemplate = value;
 
-				if (templateStream != null) {
-					templateStream.Dispose ();
-					templateStream = null;
-				}
-
 				//TODO:reload list with new template?
 				NotifyValueChanged("ItemTemplate", _itemTemplate);
 			}
@@ -131,18 +124,29 @@ namespace Crow
 			_gsList = _list as GenericStack;
 		}
 		#endregion
+
+		GraphicObject itemTmp = null;
+
 		void loading(){
-			for (int i = 1; i <= (data.Count / itemPerPage)+1; i++)
+			using (Stream stream = Interface.GetStreamFromPath (ItemTemplate)) {
+				itemTmp = Interface.Load (stream, Interface.GetTopContainerOfXMLStream (stream));
+			}
+			for (int i = 1; i <= (data.Count / itemPerPage) + 1; i++) {
+				if (cancelLoading)
+					return;
 				loadPage (i);
+			}
 		}
 		void cancelLoadingThread(){
 			if (loadingThread == null)
 				return;
 			if (!loadingThread.IsAlive)
 				return;
-			cancelLoading = true;
-			loadingThread.Join ();
-			cancelLoading = false;
+			lock (Interface.CurrentInterface.UpdateMutex) {
+				cancelLoading = true;
+				loadingThread.Join ();
+				cancelLoading = false;
+			}
 		}
 		void loadPage(int pageNum)
 		{
@@ -151,14 +155,7 @@ namespace Crow
 			loadingTime.Start ();
 			#endif
 
-			if (templateStream == null) {
-				templateStream = new MemoryStream ();
-				lock (ItemTemplate) {
-					using (Stream stream = Interface.GetStreamFromPath (ItemTemplate))
-						stream.CopyTo (templateStream);
-				}
-				templateBaseType = Interface.GetTopContainerOfXMLStream (templateStream);
-			}
+
 
 			Group page = _list.Clone () as Group;
 			
@@ -179,8 +176,9 @@ namespace Crow
 					break;
 				if (cancelLoading == true)
 					return;
-				templateStream.Seek (0, SeekOrigin.Begin);
-				GraphicObject g = Interface.Load (templateStream, templateBaseType);
+				GraphicObject g = null;
+				lock (Interface.CurrentInterface.UpdateMutex)
+					g = itemTmp.DeepClone (); 
 				g.MouseClick += itemClick;
 
 				lock (Interface.CurrentInterface.UpdateMutex)
