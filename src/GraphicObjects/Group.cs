@@ -6,6 +6,7 @@ using Cairo;
 using OpenTK.Input;
 using System.Diagnostics;
 using System.Reflection;
+using System.Linq;
 
 
 namespace Crow
@@ -27,6 +28,14 @@ namespace Crow
         bool _multiSelect = false;
 		List<GraphicObject> children = new List<GraphicObject>();
 
+		internal override IEnumerable<GraphicObject> descendants (bool includeTemplate = false)
+		{
+			foreach (GraphicObject c in children) {
+				yield return c;
+				foreach (GraphicObject d in c.descendants())
+					yield return c;
+			}
+		}
         public virtual List<GraphicObject> Children {
 			get { return children; }
 		}
@@ -45,7 +54,7 @@ namespace Crow
 			g.RegisterForLayouting (LayoutingType.Sizing | LayoutingType.ArrangeChildren);
 			g.LayoutChanged += OnChildLayoutChanges;
 		}
-        public virtual void RemoveChild(GraphicObject child)        
+        public virtual void RemoveChild(GraphicObject child)
 		{
 			child.LayoutChanged -= OnChildLayoutChanges;
 			child.ClearBinding ();
@@ -57,7 +66,7 @@ namespace Crow
 				searchLargestChild ();
 			if (child == tallestChild && Height == Measure.Fit)
 				searchTallestChild ();
-			
+
 			this.RegisterForLayouting (LayoutingType.Sizing | LayoutingType.ArrangeChildren);
         }
 		public virtual void ClearChildren()
@@ -145,7 +154,7 @@ namespace Crow
 			}
 			return base.measureRawSize (lt);
 		}
-			
+
 		public override void OnLayoutChanges (LayoutingType layoutType)
 		{
 			base.OnLayoutChanges (layoutType);
@@ -294,7 +303,7 @@ namespace Crow
 			}
 		}
 
-	
+
 		#region Mouse handling
 		public override void checkHoverWidget (MouseMoveEventArgs e)
 		{
@@ -346,7 +355,7 @@ namespace Crow
 					if (t == null)
 						throw new Exception (subTree.Name + " type not found");
                     GraphicObject go = (GraphicObject)Activator.CreateInstance(t);
-                    (go as IXmlSerializable).ReadXml(subTree);                    
+                    (go as IXmlSerializable).ReadXml(subTree);
                     AddChild(go);
                 }
             }
@@ -362,7 +371,7 @@ namespace Crow
                 writer.WriteEndElement();
             }
         }
-    
+
 		#endregion
 
 		public override void ClearBinding(){

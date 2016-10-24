@@ -57,7 +57,7 @@ namespace Crow
 		}
 		public Interface(){
 			CurrentInterface = this;
-			CultureInfo.DefaultThreadCurrentCulture = System.Globalization.CultureInfo.InvariantCulture; 
+			CultureInfo.DefaultThreadCurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 		}
 		#endregion
 
@@ -234,6 +234,9 @@ namespace Crow
 			lock (UpdateMutex) {
 				GraphicObject tmp = Load (path);
 				AddWidget (tmp);
+				foreach (GraphicObject g in GraphicTree [0].descendants()) {
+					Debug.WriteLine (g);
+				}
 
 				return tmp;
 			}

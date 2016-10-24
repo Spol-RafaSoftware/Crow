@@ -19,13 +19,48 @@ namespace Crow
 		public List<Binding> Bindings {
 			get { return bindings; }
 		}
+		[XmlAttributeAttribute][DefaultValue(null)]
+		public virtual object DataSource {
+			set {
+				if (dataSource == value)
+					return;
+				#if DEBUG_BINDING
+				Debug.WriteLine("******************************");
+				Debug.WriteLine("New DataSource for => " + this.ToString());
+				Debug.WriteLine("\t- " + DataSource);
+				Debug.WriteLine("\t+ " + value);
+				#endif
 
+				DataSourceEventArgs dse = new DataSourceEventArgs (DataSource, null);
+
+				this.ClearBinding ();
+
+				dataSource = value;
+
+				dse.NewDataSource = DataSource;
+
+				this.ResolveBindings();
+
+				NotifyValueChanged ("DataSource", dataSource);
+				DataSourceChanged.Raise (this, dse);
+
+			}
+			get {
+				return dataSource == null ? LogicalParent == null ? null :
+					LogicalParent is GraphicObject ?
+					(LogicalParent as GraphicObject).DataSource : null : dataSource;
+			}
+		}
 		#endregion
 
 		internal static ulong currentUid = 0;
 		internal ulong uid = 0;
 
 		Interface currentInterface = null;
+
+		internal virtual IEnumerable<GraphicObject> descendants (bool includeTemplate = false) {
+			yield break;
+		}
 
 		[XmlIgnore]public Interface CurrentInterface {
 			get {
@@ -178,6 +213,7 @@ namespace Crow
 		public event EventHandler Enabled;
 		public event EventHandler Disabled;
 		public event EventHandler<LayoutingEventArgs> LayoutChanged;
+		public event EventHandler DataSourceChanged;
 		#endregion
 
 		#region public properties
@@ -526,32 +562,6 @@ namespace Crow
 
 				NotifyValueChanged ("MaximumSize", maximumSize);
 				RegisterForLayouting (LayoutingType.Sizing);
-			}
-		}
-		[XmlAttributeAttribute][DefaultValue(null)]
-		public virtual object DataSource {
-			set {
-				if (dataSource == value)
-					return;
-				#if DEBUG_BINDING
-				Debug.WriteLine("******************************");
-				Debug.WriteLine("New DataSource for => " + this.ToString());
-				Debug.WriteLine("\t- " + DataSource);
-				Debug.WriteLine("\t+ " + value);
-				#endif
-
-				this.ClearBinding ();
-
-				dataSource = value;
-
-				this.ResolveBindings();
-
-				NotifyValueChanged ("DataSource", dataSource);
-			}
-			get {
-				return dataSource == null ? LogicalParent == null ? null :
-					LogicalParent is GraphicObject ?
-					(LogicalParent as GraphicObject).DataSource : null : dataSource;
 			}
 		}
 		[XmlAttributeAttribute]

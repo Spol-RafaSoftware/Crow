@@ -150,6 +150,7 @@
     <Compile Include="src\GraphicObjects\ColorSelector.cs" />
     <Compile Include="src\GraphicObjects\HueSelector.cs" />
     <Compile Include="src\GraphicObjects\SaturationValueSelector.cs" />
+    <Compile Include="src\DataSourceEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

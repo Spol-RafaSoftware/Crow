@@ -134,6 +134,7 @@ namespace Tests
 			this.Title = testFiles [idx] + ". Press <F3> to switch example.";
 			CrowInterface.LoadInterface(testFiles[idx]).DataSource = this;
 			CompilerServices.ResolveBindings (this.Bindings);
+
 		}
 		void KeyboardKeyDown1 (object sender, OpenTK.Input.KeyboardKeyEventArgs e)
 		{

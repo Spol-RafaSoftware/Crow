@@ -4,6 +4,7 @@ using System.Reflection;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Crow
 {
@@ -16,6 +17,14 @@ namespace Crow
 		}
 		#endregion
 
+		internal override IEnumerable<GraphicObject> descendants (bool includeTemplate = false)
+		{
+			yield return child;
+			if (child == null)
+				yield break;
+			foreach (GraphicObject c in child.descendants())
+				yield return c;
+		}
 		[XmlIgnore]
 		public GraphicObject Child {
 			get { return child; }
@@ -74,7 +83,7 @@ namespace Crow
             (Child as IXmlSerializable).WriteXml(writer);
             writer.WriteEndElement();
         }
-    
+
 		#endregion
 	}
 }
