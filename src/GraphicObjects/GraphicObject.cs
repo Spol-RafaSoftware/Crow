@@ -19,7 +19,7 @@ namespace Crow
 
 		Interface currentInterface = null;
 
-		public Interface CurrentInterface {
+		[XmlIgnore]public Interface CurrentInterface {
 			get {
 				if (currentInterface == null) {
 					currentInterface = Interface.CurrentInterface;
@@ -39,6 +39,7 @@ namespace Crow
 		public event EventHandler<ValueChangeEventArgs> ValueChanged;
 		public virtual void NotifyValueChanged(string MemberName, object _value)
 		{
+			//Debug.WriteLine ("Value changed: {0}->{1} = {2}", this, MemberName, _value);
 			ValueChanged.Raise(this, new ValueChangeEventArgs(MemberName, _value));
 		}
 		#endregion
@@ -239,6 +240,7 @@ namespace Crow
 
 				verticalAlignment = value;
 				NotifyValueChanged("VerticalAlignment", verticalAlignment);
+				RegisterForLayouting (LayoutingType.Y);
 			}
 		}
 		[XmlAttributeAttribute()][DefaultValue(HorizontalAlignment.Center)]
@@ -250,6 +252,7 @@ namespace Crow
 
 				horizontalAlignment = value;
 				NotifyValueChanged("HorizontalAlignment", horizontalAlignment);
+				RegisterForLayouting (LayoutingType.X);
 			}
 		}
 		[XmlAttributeAttribute()][DefaultValue(0)]
@@ -289,9 +292,13 @@ namespace Crow
 				Width = Height = Measure.Fit;
 			}
 		}
-		[XmlAttributeAttribute()][DefaultValue("Stretched")]
+		[XmlAttributeAttribute()][DefaultValue("Inherit")]
 		public virtual Measure Width {
-			get { return width; }
+			get {
+				return width.Units == Unit.Inherit ?
+					Parent is GraphicObject ? (Parent as GraphicObject).WidthPolicy :
+					Measure.Stretched : width;
+			}
 			set {
 				if (width == value)
 					return;
@@ -321,9 +328,13 @@ namespace Crow
 				this.RegisterForLayouting (LayoutingType.Width);
 			}
 		}
-		[XmlAttributeAttribute()][DefaultValue("Stretched")]
+		[XmlAttributeAttribute()][DefaultValue("Inherit")]
 		public virtual Measure Height {
-			get { return height; }
+			get {
+				return height.Units == Unit.Inherit ?
+					Parent is GraphicObject ? (Parent as GraphicObject).HeightPolicy :
+					Measure.Stretched : height;
+			}
 			set {
 				if (height == value)
 					return;
@@ -410,6 +421,8 @@ namespace Crow
 			get { return background; }
 			set {
 				if (background == value)
+					return;
+				if (value == null)
 					return;
 				background = value;
 				NotifyValueChanged ("Background", background);

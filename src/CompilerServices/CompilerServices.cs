@@ -56,7 +56,6 @@ namespace Crow
 			GetMethod("CreateDelegate", new Type[] { typeof(Type), typeof(object)});
 		internal static MethodInfo miObjToString = typeof(object).GetMethod("ToString");
 
-
 		internal static Type ehTypeDSChange = eiDSChange.EventHandlerType;
 		internal static FieldInfo fi_ehTypeDSChange  = typeof(CompilerServices).GetField("ehTypeDSChange", BindingFlags.Static | BindingFlags.NonPublic);
 
@@ -338,7 +337,7 @@ namespace Crow
 					if (b.Target.Member != null)
 						il.Emit (OpCodes.Ldstr, b.Target.Member.Name);
 					else
-						il.Emit (OpCodes.Ldstr, b.Expression.Split ('/').LastOrDefault ());
+						il.Emit (OpCodes.Ldstr, b.Expression.Split ('/').LastOrDefault ().Split('.').LastOrDefault());
 					il.Emit (OpCodes.Ldc_I4_4);//StringComparison.Ordinal
 					il.Emit (OpCodes.Callvirt, stringEquals);
 					il.Emit (OpCodes.Brtrue, jumpTable [i]);
@@ -392,7 +391,7 @@ namespace Crow
 						il.Emit (OpCodes.Callvirt, tostring.Method);
 					} else if (!sourceValueType.IsValueType)
 						il.Emit (OpCodes.Castclass, sourceValueType);
-					else if (b.Source.Property.PropertyType != sourceValueType) {
+					else if (b.Source.Property.PropertyType != sourceValueType && b.Source.Property.PropertyType != typeof(object)) {
 						il.Emit (OpCodes.Callvirt, CompilerServices.GetConvertMethod (b.Source.Property.PropertyType));
 					} else
 						il.Emit (OpCodes.Unbox_Any, b.Source.Property.PropertyType);
@@ -411,8 +410,13 @@ namespace Crow
 				il.Emit (OpCodes.Pop);
 				il.Emit (OpCodes.Ret);
 
-				Delegate del = dm.CreateDelegate (eiValueChange.EventHandlerType, Bindings [0].Source.Instance);
-				miValueChangeAdd.Invoke (grouped [0].Target.Instance, new object [] { del });
+				try {
+					Delegate del = dm.CreateDelegate (eiValueChange.EventHandlerType, Bindings [0].Source.Instance);
+					miValueChangeAdd.Invoke (grouped [0].Target.Instance, new object [] { del });
+
+				} catch (Exception ex) {					
+					Debug.WriteLine ("Binding Delegate error for {0}: \n{1}", Bindings [0].Source.Instance, ex.ToString ());
+				}
 			}
 		}
 

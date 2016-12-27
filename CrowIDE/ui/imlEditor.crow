@@ -1,0 +1,144 @@
+﻿<?xml version="1.0"?>
+<Window Height="99%" Width="99%" >
+	<VerticalStack>
+		<Menu>
+			<MenuItem Caption="File">
+				<MenuItem Caption="New"></MenuItem>
+				<MenuItem Caption="Open"></MenuItem>
+				<MenuItem Caption="Save"></MenuItem>
+				<MenuItem Caption="Quit"></MenuItem>
+			</MenuItem>
+			<MenuItem Caption="Edit">
+				<MenuItem Caption="Cut"/>
+				<MenuItem Caption="Copy"/>
+				<MenuItem Caption="Paste"/>
+			</MenuItem>
+			<MenuItem Caption="Help">
+				<MenuItem Caption="Help"/>
+				<MenuItem Caption="About"/>
+			</MenuItem>
+		</Menu>
+		<HorizontalStack Height="Fit" Margin="2">
+			<Image Style="icon" Path="#CrowIDE.images.save.svg" MouseClick="onCommandSave"/>
+		</HorizontalStack>
+		<Border Margin="1" Background="Onyx" Height="Fit">
+			<Label Width="Stretched" Margin="1" Text="{../../dv.SelectedItem}"/>
+		</Border>
+		<HorizontalStack>
+			<DirectoryView Name="dv" CurrentDirectory="./" SelectedItemChanged="Tv_SelectedItemChanged"
+				Width="20%" Height="100%" Margin="10"/>
+			<Splitter/>
+			<VerticalStack Width="Stretched">
+				<ImlVisualEditor Height="60%" Margin="0" MinimumSize="10,10" Foreground="SkyBlue"
+					ImlPath="{../../../dv.SelectedItem}"
+					Name="crowContainer" Background="Onyx"/>
+				<Splitter/>
+				<HorizontalStack Margin="10" MinimumSize="10,1">
+					<Scroller Name="scroller1" Background="White"
+							Margin="2" VerticalScrolling="true" ScrollY="{../scrollbar1.Value}"
+							ValueChanged="./_scroller_ValueChanged">
+						<TextBox Background="White" Height="Fit"
+								VerticalAlignment="Top"
+								TextAlignment="TopLeft" Font="mono, 12"
+								Text="{²../../../crowContainer.ImlSource}" Multiline="true"/>
+					</Scroller>
+					<ScrollBar Name="scrollbar1" Value="{../scroller1.ScrollY}"
+						Maximum="{../scroller1.MaximumScroll}" Orientation="Vertical"
+						Width="14" />
+				</HorizontalStack>
+			</VerticalStack>
+			<Splitter/>
+			<MembersView Width="20%" Instance="{../crowContainer.SelectedItem}" DataTest="Type">
+				<Template>
+					<Scroller  Name="scroller1" Margin="1" VerticalScrolling="true"
+						ValueChanged="./_scroller_ValueChanged">
+						<VerticalStack LayoutChanged="./_list_LayoutChanged" Spacing="0"
+							Height="Fit" Name="ItemsContainer" Margin="0" VerticalAlignment="Top"/>
+					</Scroller>
+				</Template>
+				<ItemTemplate>
+					<HorizontalStack Focusable="true"  Height="Fit" Spacing="0"
+							MouseEnter="{Background=UnitedNationsBlue}"
+							MouseLeave="{Background=Transparent}" >
+						<Label Margin="1" Text="{Name}" Height="Fit" Width="50%"/>
+						<TextBox Margin="1" Text="{²Value}" Height="Fit" Width="50%"/>
+					</HorizontalStack>
+				</ItemTemplate>
+				<ItemTemplate DataType="System.Boolean">
+					<HorizontalStack Focusable="true"  Height="Fit" Spacing="0"
+							MouseEnter="{Background=UnitedNationsBlue}"
+							MouseLeave="{Background=Transparent}" >
+						<Label Margin="1" Text="{Name}" Height="Fit" Width="50%"/>
+						<CheckBox Background="White" Margin="1" Caption="" IsChecked="{²Value}"/>
+					</HorizontalStack>
+				</ItemTemplate>
+				<ItemTemplate DataType="System.Enum">
+					<HorizontalStack Focusable="true"  Height="Fit" Spacing="0"
+							MouseEnter="{Background=UnitedNationsBlue}"
+							MouseLeave="{Background=Transparent}" >
+						<Label Margin="1" Text="{Name}" Height="Fit" Width="50%"/>
+						<ComboBox Margin="1"  Height="Fit" Width="50%" Data="{Choices}"
+								SelectedIndex="{²Value}">
+							<Template>
+								<Popper Name="popper" PopDirection="Bottom">
+									<Template>
+										<Border CornerRadius="0" Foreground="LightGray" Background="White">
+											<HorizontalStack Margin="0" Spacing="1">
+												<Label Width="Stretched" MinimumSize="80,10" Margin="1" Foreground="Black" Background="White"
+													Text="{../../../../SelectedItem}"/>
+												<Button Width="12" Height="12" Focusable="false"
+													Template="#Crow.Templates.ArrowButTemplate.crow">
+													<Image Margin="1"  Path="#Crow.Images.Icons.updown.svg" SvgSub="down"/>
+												</Button>
+											</HorizontalStack>
+										</Border>
+									</Template>
+									<Border Background="White" BorderWidth="1" Margin="1" Foreground="Black"
+										MinimumSize="{../../MinimumPopupSize}" Fit="true">
+										<Scroller Name="scroller1" Margin="2" VerticalScrolling="true"
+											MaximumSize="0,200"
+											HorizontalAlignment="Left"
+											ValueChanged="../../../_scroller_ValueChanged">
+											<VerticalStack LayoutChanged="../../../../_list_LayoutChanged"
+												MouseClick="../../../onMouseClick" Focusable="True"
+												Height="Fit" Name="ItemsContainer" Margin="0"
+												HorizontalAlignment="Left"
+												VerticalAlignment="Top"/>
+										</Scroller>
+									</Border>
+								</Popper>
+							</Template>
+							<ItemTemplate>
+								<Container Fit="true" Margin="0" Focusable="true"
+										HorizontalAlignment="Left"
+										MouseEnter="{Background=SteelBlue}"
+										MouseLeave="{Background=Transparent}">
+									<Label Text="{}" Foreground="Black"/>
+								</Container>
+							</ItemTemplate>
+						</ComboBox>
+					</HorizontalStack>
+				</ItemTemplate>
+				<ItemTemplate DataType="Crow.Fill">
+					<HorizontalStack Focusable="true"  Height="Fit" Spacing="0"
+							MouseEnter="{Background=UnitedNationsBlue}"
+							MouseLeave="{Background=Transparent}" >
+						<Label Margin="1" Text="{Name}" Height="Fit" Width="50%"/>
+						<Popper Background="White" Margin="1" Caption="{Value}">
+							<Template>
+								<HorizontalStack Spacing="3" Height="Fit" Background="{./Background}">
+									<Border Foreground="Black" Width="16" Height="10" CornerRadius="3"
+										Background="{Value}">
+									</Border>
+									<Label Text="{./Caption}" Foreground="Black"/>
+								</HorizontalStack>
+							</Template>
+							<ColorPicker SelectedColor="{²Value}" Background="Onyx" Margin="5" Fit="True" />
+						</Popper>
+					</HorizontalStack>
+				</ItemTemplate>
+
+			</MembersView>
+		</HorizontalStack>
+	</VerticalStack>
+</Window>
