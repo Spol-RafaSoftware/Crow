@@ -1,7 +1,31 @@
 ﻿<?xml version="1.0"?>
-<VerticalStack Fit="true" VerticalAlignment="Top" Background="0.7,0.7,0.7,0.5"
+<VerticalStack Font="mono, 12" Fit="true" VerticalAlignment="Top" Background="0.7,0.7,0.9,0.5"
 	Margin="10" CornerRadius="10">
-	<Label Font="20" Text="Press &lt;F3&gt; to cycle into the examples"/>
-	<Label Font="20" Text="Those are basic tests used to validate changes"/>
-	<Label Font="20" Text="{fps}"/>
+	<ProgressBar Name="pb" CornerRadius="5" Background="DimGray" Margin="1" Maximum="1000" Value="{fps}"  Width="200" Height="15"/>
+	<Slider Name="sl" Height="20" Width="300" Orientation="Horizontal" Maximum="{../pb.Maximum}" Value="{²IntValue}"/>
+	<ListBox Data="{TestList}" Background="DimGray" Margin="5" Height="20%"
+		ItemTemplate="#Tests.Interfaces.colorItem.crow"
+		Template="#Crow.Templates.ScrollingListBox.goml"/>
+		<DirectoryView Name="dv" CurrentDirectory="./" Margin="1" Height="15%"/>	
+
+	<Label Name="labOne" Text="{../sl.Value}" />
+	<Label Font="{../Font}" Text="Press &lt;F3&gt; to cycle into the examples"
+			Focusable="true"
+			MouseEnter="{Background=Red}"
+			MouseLeave="{Background=Transparent}"/>
+	<Label Name="labOne" Text="{fps}" Background="{../Background}"/>
+	<Label Font="{../Font}" Text="Those are basic tests used to validate changes"/>
+	<Button CornerRadius="5" Background="Red" Font="mono, 30" Caption="test button"
+		MouseClick="onButClick"/>
+	<HorizontalStack Height="Fit">
+		<CheckBox Name="cb1" Caption="test" IsChecked="{²../cb2.IsChecked}"/>
+		<CheckBox Name="cb2" Caption="test" IsChecked="true"/>
+	</HorizontalStack>
+	<RadioButton Caption="test1"/>
+	<RadioButton Caption="test2"/>
+	<RadioButton Caption="test3"/>
+	<RadioButton Caption="test4" Background="Red"/>
+	<CheckBox Template="#Tests.Interfaces.CheckBox2.imlt" Style="CheckBox2"	 Caption="test checkbox" 
+	Checked= "{Background=Mantis}"
+	Unchecked = "{Background=Onyx}" IsChecked="true"/>
 </VerticalStack>

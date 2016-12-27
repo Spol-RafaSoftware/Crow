@@ -34,8 +34,9 @@ namespace Tests
 		string[] testFiles;
 
 		#region Test values for Binding
-		public int intValue = 25;
+		public int intValue = 500;
 		DirectoryInfo curDir = new DirectoryInfo (Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
+		//DirectoryInfo curDir = new DirectoryInfo (@"/mnt/data/Images");
 		public FileSystemInfo[] CurDirectory {
 			get { return curDir.GetFileSystemInfos (); }
 		}
@@ -64,19 +65,26 @@ namespace Tests
 				"string1",
 				"string2",
 				"string3",
-				"string4",
-				"string5",
-				"string6",
-				"string7",
-				"string8",
-				"string8",
-				"string8",
-				"string8",
-				"string8",
-				"string8",
-				"string9"
+//				"string4",
+//				"string5",
+//				"string6",
+//				"string7",
+//				"string8",
+//				"string8",
+//				"string8",
+//				"string8",
+//				"string8",
+//				"string8",
+//				"string9"
 			}
 		);
+		public IList<String> TestList2 {
+			set{
+				List2 = value;
+				NotifyValueChanged ("TestList2", testList);
+			}
+			get { return List2; }
+		}
 		IList<Color> testList = Color.ColorDic.ToList();
 		public IList<Color> TestList {
 			set{
@@ -125,15 +133,9 @@ namespace Tests
 			testFiles = testFiles.Concat (Directory.GetFiles (@"Interfaces/Group", "*.crow")).ToArray ();
 			testFiles = testFiles.Concat (Directory.GetFiles (@"Interfaces/Stack", "*.crow")).ToArray ();
 			testFiles = testFiles.Concat (Directory.GetFiles (@"Interfaces/Wrapper", "*.crow")).ToArray ();
-			testFiles = testFiles.Concat (Directory.GetFiles (@"Interfaces/Divers", "*.crow")).ToArray ();
-			testFiles = testFiles.Concat (Directory.GetFiles (@"Interfaces/Splitter", "*.crow")).ToArray ();
-			testFiles = testFiles.Concat (Directory.GetFiles (@"Interfaces/TemplatedControl", "*.crow")).ToArray ();
-			testFiles = testFiles.Concat (Directory.GetFiles (@"Interfaces/TemplatedContainer", "*.crow")).ToArray ();
-			testFiles = testFiles.Concat (Directory.GetFiles (@"Interfaces/TemplatedGroup", "*.crow")).ToArray ();
 
-			this.Title = testFiles [idx] + ". Press <F3> to switch example.";
+			object tc = Color.AirForceBlueRaf;
 			CrowInterface.LoadInterface(testFiles[idx]).DataSource = this;
-			CompilerServices.ResolveBindings (this.Bindings);
 		}
 		void KeyboardKeyDown1 (object sender, OpenTK.Input.KeyboardKeyEventArgs e)
 		{
@@ -163,15 +165,16 @@ namespace Tests
 			else
 				return;
 		
-			CrowInterface.ClearInterface ();
-
-			if (idx == testFiles.Length)
-				idx = 0;
-			else if (idx < 0)
-				idx = testFiles.Length - 1;
-			
-			this.Title = testFiles [idx] + ". Press <F3> to cycle examples.";
 			try {
+				CrowInterface.ClearInterface ();
+
+				if (idx == testFiles.Length)
+					idx = 0;
+				else if (idx < 0)
+					idx = testFiles.Length - 1;
+				
+				this.Title = testFiles [idx] + ". Press <F3> to cycle examples.";
+
 				GraphicObject obj = CrowInterface.LoadInterface(testFiles[idx]);
 				obj.DataSource = this;
 			} catch (Exception ex) {
@@ -227,6 +230,9 @@ namespace Tests
 		{
 			base.OnUpdateFrame (e);
 			string test = e.Time.ToString ();
+			IntValue++;
+			if (IntValue == 1000)
+				IntValue = 0;
 			NotifyValueChanged ("PropertyLessBinding", test);
 		}
 		void onNew(object sender, EventArgs e){

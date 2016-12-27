@@ -27,7 +27,7 @@ using System.Collections.Generic;
 
 namespace CrowIDE
 {
-	public class PropertyContainer : IBindable, IValueChange
+	public class PropertyContainer : IValueChange
 	{
 		#region IBindable implementation
 		public object DataSource {

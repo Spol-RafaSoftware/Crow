@@ -7,9 +7,9 @@
 		<VerticalStack LayoutChanged="./_list_LayoutChanged"
 			Height="Fit" Name="ItemsContainer" Margin="0" VerticalAlignment="Top"/>
 	</Scroller>
-	<ScrollBar
+<!--	<ScrollBar
 		Name="scrollbar1"
 		Value="{../scroller1.ScrollY}"
 		Maximum="{../scroller1.MaximumScroll}"
-		Width="14" Orientation="Vertical"/>
+		Width="14" Orientation="Vertical"/>-->
 </HorizontalStack>

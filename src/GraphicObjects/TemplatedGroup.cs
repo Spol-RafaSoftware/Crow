@@ -371,8 +371,6 @@ namespace Crow
 				g = iTemp.CreateInstance(CurrentInterface);
 				page.AddChild (g);
 				g.DataSource = data [i];
-				if (typeof(IBindable).IsAssignableFrom (dataType))
-					CompilerServices.ResolveBindings ((data [i] as IBindable).Bindings);
 			}
 
 			registerItemClick (g);
