@@ -866,7 +866,7 @@ namespace Crow
 				il.Emit (OpCodes.Call, typeof(CompilerServices).GetMethod("getMemberInfoWithReflexion", BindingFlags.Static | BindingFlags.Public));
 				il.Emit (OpCodes.Stloc_1);//save memberInfo
 				il.Emit (OpCodes.Ldloc_1);//push mi for test if null
-				il.Emit (OpCodes.Brfalse, cancelInit);
+				il.Emit (OpCodes.Brfalse, cancel);
 			}
 
 			il.Emit (OpCodes.Ldarg_1);//load source of dataSourceChanged which is the dest instance
@@ -882,6 +882,11 @@ namespace Crow
 
 			if (!string.IsNullOrEmpty(bindingDef.TargetMember)){
 				il.MarkLabel(cancelInit);
+				//check if new dataSource implement IValueChange
+				il.Emit (OpCodes.Ldarg_2);//load new datasource
+				il.Emit (OpCodes.Ldfld, CompilerServices.fiDSCNewDS);
+				il.Emit (OpCodes.Isinst, typeof(IValueChange));
+				il.Emit (OpCodes.Brfalse, cancel);
 
 				il.Emit(OpCodes.Ldarg_0);//load ref to this instanciator onto the stack
 				il.Emit (OpCodes.Ldarg_1);//load datasource change source

@@ -696,10 +696,11 @@ namespace Crow
 			}
 			if (tmp != null)
 				return tmp;
-			if (dstType == typeof(string))
+			if (dstType == typeof(string) || dstType == typeof(object))//TODO:object should be allowed to return null and not ""
 				return "";
 			if (dstType.IsValueType)
 				return Activator.CreateInstance (dstType);
+			
 			return null;
 		}
 		public static void emitGetInstance (ILGenerator il, NodeAddress orig, NodeAddress dest){
@@ -855,6 +856,10 @@ namespace Crow
 		public static void RemoveEventHandlerByName(object instance, string eventName, string delegateName){
 			Type t = instance.GetType ();
 			FieldInfo fiEvt = CompilerServices.GetEventHandlerField (t, eventName);
+			if (fiEvt == null) {
+				Debug.WriteLine ("RemoveHandlerByName: Event '" + eventName + "' not found in " + instance);
+				return;
+			}
 			EventInfo eiEvt = t.GetEvent (eventName);
 			MulticastDelegate multiDel = fiEvt.GetValue (instance) as MulticastDelegate;
 			if (multiDel != null) {

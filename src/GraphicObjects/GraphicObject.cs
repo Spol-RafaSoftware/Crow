@@ -1174,6 +1174,12 @@ namespace Crow
 			MouseMove.Raise (sender, e);
 		}
 		public virtual void onMouseDown(object sender, MouseButtonEventArgs e){
+			if (CurrentInterface.eligibleForDoubleClick == this && CurrentInterface.clickTimer.ElapsedMilliseconds < Interface.DoubleClick)
+				onMouseDoubleClick (this, e);
+			else
+				currentInterface.clickTimer.Restart();
+			CurrentInterface.eligibleForDoubleClick = null;
+			
 			if (CurrentInterface.activeWidget == null)
 				CurrentInterface.activeWidget = this;
 			if (this.Focusable && !Interface.FocusOnHover) {
@@ -1198,19 +1204,13 @@ namespace Crow
 
 			MouseUp.Raise (this, e);
 
-			if (MouseIsIn (e.Position) && IsActive)
+			if (MouseIsIn (e.Position) && IsActive) {
+				if (CurrentInterface.clickTimer.ElapsedMilliseconds < Interface.DoubleClick)
+					CurrentInterface.eligibleForDoubleClick = this;
 				onMouseClick (this, e);
+			}
 		}
 		public virtual void onMouseClick(object sender, MouseButtonEventArgs e){
-
-			if (Interface.clickTimer.ElapsedMilliseconds > 0 &&
-			    Interface.clickTimer.ElapsedMilliseconds < Interface.DoubleClick) {
-				Interface.clickTimer.Reset ();
-				onMouseDoubleClick (this, e);
-				return;
-			} else
-				Interface.clickTimer.Restart ();
-
 			GraphicObject p = Parent as GraphicObject;
 			if (p != null)
 				p.onMouseClick(sender,e);

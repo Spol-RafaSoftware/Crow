@@ -70,7 +70,7 @@
 			</HorizontalStack>
 			<GroupBox Caption="Templated controls" Height="Fit" Margin="5">
 				<HorizontalStack Height="Fit">
-					<VerticalStack Width="50%">
+<!--					<VerticalStack Width="50%">
 						<CheckBox IsChecked="false" Template="#Tests.Interfaces.CheckBox2.imlt" Style="CheckBox2"
 							Background="Red" 
 							Checked= "{Background=Mantis;Font=droid bold, 11}"
@@ -87,7 +87,7 @@
 						<RadioButton  Template="#Tests.Interfaces.CheckBox2.imlt" Style="RadioButton2"/>
 						<RadioButton  Template="#Tests.Interfaces.CheckBox2.imlt" Style="RadioButton2"/>
 						<RadioButton  Template="#Tests.Interfaces.CheckBox2.imlt" Style="RadioButton2"/>
-					</VerticalStack>
+					</VerticalStack>-->
 				</HorizontalStack>
 			</GroupBox>
 			<HorizontalStack Height="Fit">
@@ -148,7 +148,7 @@
 				<Label Width="Stretched" Margin="1" Text="{../../dv.SelectedItem}"/>
 			</Border>
 			<Border Margin="5" Height="30%">
-				<DirectoryView Name="dv" CurrentDirectory="./" Margin="1"/>
+				<DirectoryView Name="dv" CurrentDirectory="/" Margin="1"/>
 			</Border>
 			<Splitter/>
 			<ListBox Data="{TestList}" Margin="5"

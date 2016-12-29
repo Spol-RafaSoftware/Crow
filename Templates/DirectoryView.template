@@ -10,7 +10,7 @@
 				MouseLeave="{Background=Transparent}"/>
 		</HorizontalStack>
 	</ItemTemplate>
-	<ItemTemplate DataType="System.IO.DirectoryInfo" Data="GetFileSystemInfos">
+	<ItemTemplate DataType="System.IO.DirectoryInfo" Data="GetDirectories">
 		<Expandable Caption="{Name}" >
 			<Template>
 				<VerticalStack>
@@ -19,6 +19,7 @@
 							MouseLeave="{Background=Transparent}">
 						<Image Margin="2" Width="12" Height="12"
 							Path="{./Image}"
+							Visible="{./IsExpandable}"
 							SvgSub="{./IsExpanded}"/>
 						<Image Margin="2" Width="14" Height="14"
 							Path="#Crow.Images.Icons.folder.svg"/>

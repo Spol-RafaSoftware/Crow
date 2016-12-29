@@ -20,8 +20,8 @@
 			<VerticalStack Margin="5">
 				<TextBox Text="{²./CurrentDirectory}"/>
 				<HorizontalStack>
-					<DirectoryView Name="dv" CurrentDirectory="{²./CurrentDirectory}" SelectedItemChanged="./Tv_SelectedItemChanged"
-						Width="50%" Margin="1" ShowFiles="false">
+					<DirectoryView ShowFiles="false" Name="dv" CurrentDirectory="{²./CurrentDirectory}" SelectedItemChanged="./Tv_SelectedItemChanged"
+						Width="50%" Margin="1">
 						<Template>
 							<TreeView IsRoot="true" Name="treeView" Data="{./FileSystemEntries}"
 									SelectedItemChanged="./onSelectedItemChanged">
@@ -38,12 +38,15 @@
 									<Expandable Caption="{Name}" >
 										<Template>
 											<VerticalStack>
-												<HorizontalStack Spacing="1" Height="Fit"
+												<HorizontalStack Spacing="1" Height="Fit" 
 														MouseEnter="{Background=hgradient|0:BlueCrayola|1:Transparent}"
 														MouseLeave="{Background=Transparent}">
-													<Image Margin="2" Width="12" Height="12"
-														Path="{./Image}"
-														SvgSub="{./IsExpanded}"/>
+													<Container Margin="2" Width="12" Height="12" Focusable="true" MouseClick="./onClickForExpand">
+														<Image
+															Path="{./Image}"
+															Visible="{./IsExpandable}"
+															SvgSub="{./IsExpanded}"/>
+													</Container>
 													<Image Margin="2" Width="14" Height="14"
 														Path="#Crow.Images.Icons.folder.svg"/>
 
@@ -62,7 +65,10 @@
 							</TreeView>
 						</Template>
 					</DirectoryView>
+					<Splitter/>
+
 				</HorizontalStack>
+				<TextBox Text="{../../dv.SelectedItem}"/>
 				<HorizontalStack Fit="true" HorizontalAlignment="Right">
 					<Button Caption="Ok" MouseClick="onFileSelect"/>
 					<Button Caption="Cancel"/>

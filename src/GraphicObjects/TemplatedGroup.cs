@@ -120,7 +120,9 @@ namespace Crow
 		[XmlIgnore]public virtual object SelectedItem{
 			get { return data == null ? null : _selectedIndex < 0 ? null : data[_selectedIndex]; }
 		}
-
+		[XmlIgnore]public bool HasItems {
+			get { return Items.Count > 0; }
+		}
 		[XmlAttributeAttribute]public IList Data {
 			get { return data; }
 			set {
@@ -147,6 +149,7 @@ namespace Crow
 				NotifyValueChanged ("SelectedIndex", _selectedIndex);
 				NotifyValueChanged ("SelectedItem", SelectedItem);
 				SelectedItemChanged.Raise (this, new SelectionChangeEventArgs (SelectedItem));
+				NotifyValueChanged ("HasItems", HasItems);
 			}
 		}
 
@@ -332,8 +335,6 @@ namespace Crow
 					return;
 
 				loadItem (i, page);
-
-				//g.LogicalParent = this;
 			}
 
 			lock (CurrentInterface.LayoutMutex)
@@ -370,14 +371,17 @@ namespace Crow
 			lock (CurrentInterface.LayoutMutex) {
 				g = iTemp.CreateInstance(CurrentInterface);
 				page.AddChild (g);
-				g.DataSource = data [i];
+				registerItemClick (g);
 			}
-
-			registerItemClick (g);
 
 			if (iTemp.Expand != null && g is Expandable) {
 				(g as Expandable).Expand += iTemp.Expand;
-			}			
+				(g as Expandable).GetIsExpandable = iTemp.HasSubItems;
+			}
+			//g.LogicalParent = this;
+
+
+			g.DataSource = data [i];
 		}
 		protected virtual void registerItemClick(GraphicObject g){
 			g.MouseClick += itemClick;

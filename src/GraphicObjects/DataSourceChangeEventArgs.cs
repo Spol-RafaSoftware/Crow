@@ -32,6 +32,10 @@ namespace Crow
 			OldDataSource = oldDataSource;
 			NewDataSource = newDataSource;
 		}
+		public override string ToString ()
+		{
+			return string.Format ("DSChangeEA: {0} => {1}", OldDataSource, NewDataSource);
+		}
 	}
 }
 

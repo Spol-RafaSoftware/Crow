@@ -14,7 +14,7 @@
     <IntermediateOutputPath>$(SolutionDir)build/obj/$(Configuration)</IntermediateOutputPath>
     <CustomCommands>
       <CustomCommands>
-	<Command type="Execute" command="${TargetName}" workingdir="${SolutionDir}/build/${ProjectConfigName}" />
+        <Command type="Execute" command="${TargetName}" workingdir="${SolutionDir}/build/${ProjectConfigName}" />
       </CustomCommands>
     </CustomCommands>
     <ReleaseVersion>0.5</ReleaseVersion>
@@ -59,6 +59,7 @@
     </Reference>
     <Reference Include="OpenTK">
       <HintPath>$(SolutionDir)packages\OpenTK.Next.1.2.2336.6514-pre\lib\net20\OpenTK.dll</HintPath>
+      <Package>opentk</Package>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
