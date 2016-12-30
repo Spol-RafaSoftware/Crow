@@ -47,18 +47,10 @@ namespace Crow
 
 		public BooleanTestOnInstance GetIsExpandable;
 
-		#region GraphicObject overrides
 		public void onClickForExpand (object sender, MouseButtonEventArgs e)
 		{
-			if (this.HasFocus)
-				IsExpanded = !IsExpanded;
-			//base.onMouseClick (sender, e);
+			IsExpanded = !IsExpanded;
 		}
-//		public override void OnDataSourceChanged (object sender, DataSourceChangeEventArgs e)
-//		{
-//			base.OnDataSourceChanged (sender, e);
-//		}
-		#endregion
 
 		public override GraphicObject Content {
 			get {

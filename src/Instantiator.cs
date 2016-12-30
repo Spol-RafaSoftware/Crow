@@ -487,7 +487,9 @@ namespace Crow
 				else //template handler binding, will be added to root parentChanged
 					templateCachedDelegateIndices.Add (delDSIndex);
 			} else {//normal in tree handler binding, store until tree is complete (end of parse)
-
+				ctx.UnresolvedTargets.Add (new EventBinding (
+					bindingDef.SourceNA, sourceEvent,
+					bindingDef.TargetNA, bindingDef.TargetMember, bindingDef.TargetName));
 			}
 		}
 		#endregion

@@ -892,7 +892,13 @@ namespace Crow
 				}
 			}
 		}
-
+		internal static Delegate createDel(Type eventType, object instance, string method){
+			Type t = instance.GetType ();
+			MethodInfo mi = t.GetMethod (method);
+			if (mi == null)
+				return null;
+			return Delegate.CreateDelegate (eventType, instance, mi);
+		}
 		public static Delegate compileDynEventHandler(EventInfo sourceEvent, string expression, NodeAddress currentNode = null){
 			#if DEBUG_BINDING
 			Debug.WriteLine ("\tCompile Event {0}: {1}", sourceEvent.Name, expression);
