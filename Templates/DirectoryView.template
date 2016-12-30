@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0"?>
-<TreeView IsRoot="true" Name="treeView" Data="{./FileSystemEntries}"
+<TreeView IsRoot="true" Name="treeView" Data="{./FileSystemEntries}" Background="{./Background}"
 		SelectedItemChanged="./onSelectedItemChanged">
 	<ItemTemplate DataType="System.IO.FileInfo">
 		<HorizontalStack Focusable="true"  Height="Fit" Width="Stretched" >

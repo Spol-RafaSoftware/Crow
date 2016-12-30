@@ -1066,9 +1066,12 @@ namespace Crow
 					throw new Exception ("Binding error: try to bind outside IML source");
 				ptr -= levelUp;
 			}
-			Node[] targetNode = new Node[ptr+1];
-			Array.Copy (sourceAddr.ToArray (), targetNode, ptr + 1);
-			return new NodeAddress (targetNode);
+			//TODO:change Template special address identified with Nodecount = 0 to something not using array count to 0,
+			//here linq is working without limits checking in compile option
+			//but defining a 0 capacity array with limits cheking enabled, cause 'out of memory' error
+			return new NodeAddress (sourceAddr.Take(ptr+1).ToArray());//[ptr+1];
+			//Array.Copy (sourceAddr.ToArray (), targetNode, ptr + 1);
+			//return new NodeAddress (targetNode);
 		}
 
 	}

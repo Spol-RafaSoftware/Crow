@@ -35,8 +35,7 @@
 				<Splitter/>
 				<HorizontalStack Margin="10" MinimumSize="10,1">
 					<Scroller Name="scroller1" Background="White"
-							Margin="2" VerticalScrolling="true" ScrollY="{../scrollbar1.Value}"
-							ValueChanged="./_scroller_ValueChanged">
+							Margin="2" VerticalScrolling="true" ScrollY="{../scrollbar1.Value}">
 						<TextBox Background="White" Height="Fit"
 								VerticalAlignment="Top"
 								TextAlignment="TopLeft" Font="mono, 12"
@@ -50,9 +49,8 @@
 			<Splitter/>
 			<MembersView Width="20%" Instance="{../crowContainer.SelectedItem}" DataTest="Type">
 				<Template>
-					<Scroller  Name="scroller1" Margin="1" VerticalScrolling="true"
-						ValueChanged="./_scroller_ValueChanged">
-						<VerticalStack LayoutChanged="./_list_LayoutChanged" Spacing="0"
+					<Scroller  Name="scroller1" Margin="1" VerticalScrolling="true">
+						<VerticalStack Spacing="0"
 							Height="Fit" Name="ItemsContainer" Margin="0" VerticalAlignment="Top"/>
 					</Scroller>
 				</Template>
@@ -97,9 +95,8 @@
 										MinimumSize="{../../MinimumPopupSize}" Fit="true">
 										<Scroller Name="scroller1" Margin="2" VerticalScrolling="true"
 											MaximumSize="0,200"
-											HorizontalAlignment="Left"
-											ValueChanged="../../../_scroller_ValueChanged">
-											<VerticalStack LayoutChanged="../../../../_list_LayoutChanged"
+											HorizontalAlignment="Left">
+											<VerticalStack 
 												MouseClick="../../../onMouseClick" Focusable="True"
 												Height="Fit" Name="ItemsContainer" Margin="0"
 												HorizontalAlignment="Left"

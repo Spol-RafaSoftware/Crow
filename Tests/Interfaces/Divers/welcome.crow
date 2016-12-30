@@ -3,10 +3,10 @@
 	Margin="10" CornerRadius="10">
 	<ProgressBar Name="pb" CornerRadius="5" Background="DimGray" Margin="1" Maximum="1000" Value="{fps}"  Width="200" Height="15"/>
 	<Slider Name="sl" Height="20" Width="300" Orientation="Horizontal" Maximum="{../pb.Maximum}" Value="{²IntValue}"/>
-	<ListBox Data="{TestList}" Background="DimGray" Margin="5" Height="20%"
+	<ListBox Data="{TestList}" Background="Onyx" Margin="5" Height="20%"
 		ItemTemplate="#Tests.Interfaces.colorItem.crow"
 		Template="#Crow.Templates.ScrollingListBox.goml"/>
-		<DirectoryView Name="dv" CurrentDirectory="./" Margin="1" Height="15%"/>	
+		<DirectoryView Background="Onyx" Name="dv" CurrentDirectory="./" Margin="1" Height="25%" Width="Stretched"/>	
 
 	<Label Name="labOne" Text="{../sl.Value}" />
 	<Label Font="{../Font}" Text="Press &lt;F3&gt; to cycle into the examples"

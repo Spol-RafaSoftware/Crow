@@ -35,9 +35,8 @@
     <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>True</Optimize>
-    <DebugType>None</DebugType>
-    <DefineConstants>__linux__;MEASURE_TIME</DefineConstants>
+    <Optimize>true</Optimize>
+    <DefineConstants>__linux__</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="src\Colors.cs" />
