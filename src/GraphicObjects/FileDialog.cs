@@ -40,13 +40,13 @@ namespace Crow
 		#endregion
 		//[DefaultValue(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))]
 		[XmlAttributeAttribute][DefaultValue("/home")]
-		public virtual string CurrentDirectory {
+		public virtual string RootDirectory {
 			get { return curDirectory; }
 			set {
 				if (curDirectory == value)
 					return;
 				curDirectory = value; 
-				NotifyValueChanged ("CurrentDirectory", curDirectory);
+				NotifyValueChanged ("RootDirectory", curDirectory);
 
 			}
 		} 
@@ -63,6 +63,17 @@ namespace Crow
 			}
 		} 
 
+		string selectedFileName;
+		[XmlIgnore]public virtual string SelectedFileName {
+			get { return selectedFileName; }
+			set {
+				if (selectedFileName == value)
+					return;
+				selectedFileName = value; 
+				NotifyValueChanged ("SelectedFileName", selectedFileName);
+
+			}
+		} 
 //		public DirectoryInfo[] Directories
 //		{
 //			get {

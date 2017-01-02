@@ -126,11 +126,12 @@ namespace Tests
 
 			this.KeyDown += KeyboardKeyDown1;
 
-			//testFiles = new string [] { @"Interfaces/Unsorted/testFileDialog.crow" };
+			testFiles = new string [] { @"Interfaces/Unsorted/testFileDialog.crow" };
 			//testFiles = new string [] { @"Interfaces/Divers/colorPicker.crow" };
-			testFiles = new string [] { @"Interfaces/Divers/welcome.crow" };
+			//testFiles = new string [] { @"Interfaces/Divers/welcome.crow" };
 			//testFiles = new string [] { @"Interfaces/TemplatedContainer/test_Listbox.crow" };
 			//testFiles = new string [] { @"Interfaces/TemplatedControl/testItemTemplateTag.crow" };
+			//testFiles = new string [] { @"Interfaces/TemplatedControl/testCombobox.crow" };
 			//testFiles = new string [] { @"Interfaces/Divers/test2WayBinding.crow" };
 			//testFiles = new string [] { @"Interfaces/Divers/testPropLess.crow" };
 			testFiles = testFiles.Concat (Directory.GetFiles (@"Interfaces/GraphicObject", "*.crow")).ToArray ();

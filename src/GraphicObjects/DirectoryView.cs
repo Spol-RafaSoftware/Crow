@@ -64,22 +64,22 @@ namespace Crow
 			}
 		}
 		[XmlAttributeAttribute][DefaultValue("/")]
-		public virtual string CurrentDirectory {
+		public virtual string RootDirectory {
 			get { return currentDirectory; }
 			set {
 				if (currentDirectory == value)
 					return;
 				currentDirectory = value;
-				NotifyValueChanged ("CurrentDirectory", currentDirectory);
+				NotifyValueChanged ("RootDirectory", currentDirectory);
 				NotifyValueChanged ("FileSystemEntries", FileSystemEntries);
 			}
 		}
 		[XmlIgnore]public FileSystemInfo[] FileSystemEntries {
 			get { 
-				return string.IsNullOrEmpty(CurrentDirectory) ? null :
+				return string.IsNullOrEmpty(RootDirectory) ? null :
 					showFiles ?					
-					new DirectoryInfo (CurrentDirectory).GetFileSystemInfos () :
-					new DirectoryInfo(CurrentDirectory).GetDirectories(); 
+					new DirectoryInfo (RootDirectory).GetFileSystemInfos () :
+					new DirectoryInfo(RootDirectory).GetDirectories(); 
 			}
 		}
 		public void onSelectedItemChanged (object sender, SelectionChangeEventArgs e){
@@ -87,6 +87,16 @@ namespace Crow
 				return;
 			SelectedItem = e.NewValue;
 			SelectedItemChanged.Raise (this, e);
+
+			FileSystemInfo fsi = e.NewValue as FileSystemInfo;
+			if (fsi == null)
+				return;
+			DirectoryInfo di = fsi as DirectoryInfo;
+			if (di == null)
+				NotifyValueChanged ("SelectedDirectory", Path.GetDirectoryName (fsi.FullName));
+			else
+				NotifyValueChanged ("SelectedDirectory", di.FullName);
+			NotifyValueChanged ("SelectedFile", Path.GetFileName (fsi.FullName));
 		}
 	}
 }

@@ -18,9 +18,9 @@
 		</HorizontalStack>
 		<Container Name="Content" MinimumSize="50,50" Background="Onyx">
 			<VerticalStack Margin="5">
-				<TextBox Text="{²./CurrentDirectory}"/>
+				<TextBox Text="{²./RootDirectory}"/>
 				<HorizontalStack>
-					<DirectoryView ShowFiles="false" Name="dv" CurrentDirectory="{²./CurrentDirectory}" SelectedItemChanged="./Tv_SelectedItemChanged"
+					<DirectoryView ShowFiles="false" Name="dv" RootDirectory="{²./RootDirectory}"
 						Width="50%" Margin="1">
 						<Template>
 							<TreeView IsRoot="true" Name="treeView" Data="{./FileSystemEntries}"
@@ -67,10 +67,11 @@
 						</Template>
 					</DirectoryView>
 					<Splitter/>
-					<DirectoryView ShowFiles="true" Name="dv" CurrentDirectory="{../dv.SelectedItem}" 
+					<DirectoryView ShowFiles="true" Name="fv" RootDirectory="{../dv.SelectedItem}" 
 						Width="50%" Margin="1">
 						<Template>
-							<ListBox Name="fileView" Data="{./FileSystemEntries}">
+							<ListBox Name="fileView" Data="{./FileSystemEntries}"
+								SelectedItemChanged="./onSelectedItemChanged">
 								<Template>
 									<Border BorderWidth="1" Margin="1" MinimumSize="10,10">
 										<Scroller  Name="scroller1" Margin="1" VerticalScrolling="true">
@@ -101,10 +102,11 @@
 						</Template>
 					</DirectoryView>
 				</HorizontalStack>
-				<TextBox Text="{../../dv.SelectedItem}"/>
+				<TextBox Text="{../../dv.SelectedDirectory}"/>
+				<TextBox Text="{../../fv.SelectedFile}"/>
 				<HorizontalStack Fit="true" HorizontalAlignment="Right">
 					<Button Caption="Ok" MouseClick="onFileSelect"/>
-					<Button Caption="Cancel"/>
+					<Button Caption="Cancel" MouseClick="./butQuitPress"/>
 				</HorizontalStack>
 			</VerticalStack>
 		</Container>
