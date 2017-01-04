@@ -205,8 +205,9 @@ namespace Crow
 					foreach (GraphicObject c in Children) {
 						if (!c.Visible)
 							continue;
-						if (Clipping.intersect(c.Slot + ClientRectangle.Position))
-							c.Paint (ref gr);
+						if (Clipping.Region.ContainsPoint (c.Slot + ClientRectangle.Position) == RegionOverlap.Out)
+							continue;
+						c.Paint (ref gr);
 					}
 
 					#if DEBUG_CLIP_RECTANGLE
@@ -214,7 +215,6 @@ namespace Crow
 					#endif
 				}
 				gr.Dispose ();
-
 				ctx.SetSourceSurface (cache, rb.X, rb.Y);
 				ctx.Paint ();
 			}
@@ -259,7 +259,7 @@ namespace Crow
 		}
 		void searchLargestChild(){
 			#if DEBUG_LAYOUTING
-			Debug.WriteLine("\tSearch largest child");
+			Debug.WriteLine("\tSearch largest child in " + this.ToString());
 			#endif
 			largestChild = null;
 			contentSize.Width = 0;
@@ -276,7 +276,7 @@ namespace Crow
 		}
 		void searchTallestChild(){
 			#if DEBUG_LAYOUTING
-			Debug.WriteLine("\tSearch tallest child");
+			Debug.WriteLine("\tSearch tallest child in " + this.ToString());
 			#endif
 			tallestChild = null;
 			contentSize.Height = 0;

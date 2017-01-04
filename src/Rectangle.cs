@@ -9,66 +9,50 @@ namespace Crow
     {
 		internal static Type TRectangle = typeof(Rectangle);
 		#region private fields
-        int _x;
-        int _y;
-        int _width;
-        int _height;
+        public int X;
+		public int Y;
+		public int Width;
+		public int Height;
 		#endregion
 
 		#region ctor
         public Rectangle(Point p, Size s)
         {
-            _x = p.X;
-            _y = p.Y;
-            _width = s.Width;
-            _height = s.Height;
+            X = p.X;
+            Y = p.Y;
+            Width = s.Width;
+            Height = s.Height;
         }
         public Rectangle(Size s)
         {
-            _x = 0;
-            _y = 0;
-            _width = s.Width;
-            _height = s.Height;
+            X = 0;
+            Y = 0;
+            Width = s.Width;
+            Height = s.Height;
         }
         public Rectangle(int x, int y, int width, int height)
         {
-            _x = x;
-            _y = y;
-            _width = width;
-            _height = height;
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
         }
 		#endregion
 
 		#region PROPERTIES
-        [XmlIgnore]public int X{
-            get { return _x; }
-            set { _x = value; }
-        }
-		[XmlIgnore]public int Y{
-            get { return _y; }
-            set { _y = value; }
-        }
 		[XmlIgnore]public int Left{
-            get { return _x; }
-            set { _x = value; }
+            get { return X; }
+            set { X = value; }
         }
 		[XmlIgnore]public int Top{
-            get { return _y; }
-            set { _y = value; }
+            get { return Y; }
+            set { Y = value; }
         }
 		[XmlIgnore]public int Right{
-            get { return _x + _width; }
+            get { return X + Width; }
         }
 		[XmlIgnore]public int Bottom{
-            get { return _y + _height; }
-        }
-		[XmlIgnore]public int Width{
-            get { return _width; }
-            set { _width = value; }
-        }
-		[XmlIgnore]public int Height{
-            get { return _height; }
-            set { _height = value; }
+            get { return Y + Height; }
         }
 		[XmlIgnore]public Size Size{
             get { return new Size(Width, Height); }
@@ -169,6 +153,19 @@ namespace Crow
 		#endregion
 
         #region operators
+		public static implicit operator Cairo.RectangleInt(Rectangle r)
+		{
+			Cairo.RectangleInt ri;
+			ri.X = r.X;
+			ri.Y = r.Y;
+			ri.Height = r.Height;
+			ri.Width = r.Width;
+			return ri;
+		}
+		public static implicit operator Rectangle(Cairo.RectangleInt r)
+		{
+			return new Rectangle(r.X, r.Y, r.Width, r.Height);
+		}
         public static implicit operator Rectangle(System.Drawing.Rectangle r)
         {
             return new Rectangle(r.X, r.Y, r.Width, r.Height);
@@ -227,10 +224,10 @@ namespace Crow
 			{
 				int hash = 17;
 				// Suitable nullity checks etc, of course :)
-				hash = hash * 23 + _x.GetHashCode();
-				hash = hash * 23 + _y.GetHashCode();
-				hash = hash * 23 + _width.GetHashCode();
-				hash = hash * 23 + _height.GetHashCode();
+				hash = hash * 23 + X.GetHashCode();
+				hash = hash * 23 + Y.GetHashCode();
+				hash = hash * 23 + Width.GetHashCode();
+				hash = hash * 23 + Height.GetHashCode();
 				return hash;
 			}
 		}

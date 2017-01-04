@@ -424,8 +424,18 @@ namespace Crow
 							GraphicObject p = GraphicTree[i];
 							if (!p.Visible)
 								continue;
-							if (!clipping.intersect (p.Slot))
+
+							if (clipping.Region.ContainsPoint(p.Slot)== RegionOverlap.Out)
 								continue;
+							//if (!clipping.intersect (p.Slot))
+//							if (!ctx.InClip (p.Slot.X, p.Slot.Y)) {
+//								if (!ctx.InClip (p.Slot.Right, p.Slot.Y)) {
+//									if (!ctx.InClip (p.Slot.X, p.Slot.Bottom)) {
+//										if (!ctx.InClip (p.Slot.Right, p.Slot.Bottom))
+//											continue;
+//									}
+//								}
+//							}
 							ctx.Save ();
 
 							p.Paint (ref ctx);
@@ -438,9 +448,9 @@ namespace Crow
 						#endif
 						lock (RenderMutex) {
 							if (IsDirty)
-								DirtyRect += clipping.Bounds;
+								DirtyRect += clipping.Region.Extents;
 							else
-								DirtyRect = clipping.Bounds;
+								DirtyRect = clipping.Region.Extents;
 							IsDirty = true;
 
 							DirtyRect.Left = Math.Max (0, DirtyRect.Left);
