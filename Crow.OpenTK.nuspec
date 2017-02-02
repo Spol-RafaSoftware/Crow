@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>Crow.OpenTK</id>
-		<version>0.4.10</version>
+		<version>0.5.0</version>
 		<title>C# Rapid Open Widget Toolkit</title>
 		<authors>JP Bruyere</authors>
 		<owners>Grand Tetras Software</owners>
@@ -13,19 +13,26 @@
 		<description>
 CROW is a pure C# widget toolkit with templates, styles, compositing, and bindings.
 Crow.OpenTK is the OpenTK ready version.
-It runs with Mono FrameWork >= 4.0.
-This package depends on a pre-release OpenTK version, ensure pre-release packages are visible in your nuget client when adding Crow package.
 		</description>
 		<summary>
 CROW is a pure C# widget toolkit with templates, styles, compositing, and bindings.
 Crow.OpenTK is the OpenTK ready version.
 
+It runs with Mono FrameWork >= 4.0. The required Dll are:
+
 For more information, please visit https://jpbruyere.github.io/Crow/.
 		</summary>
-		<releaseNotes>alpha release</releaseNotes>
+		<releaseNotes>
+			- New binding system with precompiled delegates cached in instantiators
+			- TemplatedGroup
+			- lots of debug and improvements
+			- Configuration class for easy global variables storing
+			- Color Picker
+			- ...
+		</releaseNotes>
 		<copyright>Copyright 2016</copyright>
 		<dependencies>
-			<dependency id="OpenTK.Next" version="1.2" />
+			<dependency id="OpenTK" version="2.0" />
 		</dependencies>
         <tags>Crow OpenTK OpenGL Widget Interface GUI C# .Net Mono</tags>
         <references>
@@ -35,14 +42,11 @@ For more information, please visit https://jpbruyere.github.io/Crow/.
 			<frameworkAssembly assemblyName="System" />
 			<frameworkAssembly assemblyName="System.Drawing" />
 			<frameworkAssembly assemblyName="System.Xml" />
-			<frameworkAssembly assemblyName="gio-sharp" />
-			<frameworkAssembly assemblyName="gdk-sharp" />
-			<frameworkAssembly assemblyName="glib-sharp" />
-			<frameworkAssembly assemblyName="cairo-sharp" />
 		</frameworkAssemblies>
 	</metadata>
 	<files>
-		<file src="Tests/OpenTKGameWindow.cs" target="content" />
+		<file src="Tests/CrowWindow.cs" target="content" />
+		<file src="Tests/InterfaceControler.cs" target="content" />
 		<file src="Tests/OpenGL/*.cs" target="content/OpenGL" />
 		<file src="build/Release/Crow.dll" target="lib/net45" />
 		<file src="build/Release/Crow.dll.config" target="content" />
