@@ -33,7 +33,7 @@ namespace Crow
 {
 	public class Window : TemplatedContainer
 	{
-		enum Direction
+		protected enum Direction
 		{
 			None,
 			N,
@@ -49,14 +49,14 @@ namespace Crow
 		string _icon;
 		bool _resizable;
 		bool _movable;
-		bool hoverBorder = false;
+		protected bool hoverBorder = false;
 		bool alwaysOnTop = false;
 
 		Rectangle savedBounds;
 		bool _minimized = false;
 
 		Container _contentContainer;
-		Direction currentDirection = Direction.None;
+		protected Direction currentDirection = Direction.None;
 
 		#region Events
 		public event EventHandler Closing;
@@ -371,13 +371,13 @@ namespace Crow
 
 			Minimize.Raise (sender, e);
 		}
-		protected void onBorderMouseLeave (object sender, MouseMoveEventArgs e)
+		protected virtual void onBorderMouseLeave (object sender, MouseMoveEventArgs e)
 		{
 			hoverBorder = false;
 			currentDirection = Direction.None;
 			CurrentInterface.MouseCursor = XCursor.Default;
 		}
-		protected void onBorderMouseEnter (object sender, MouseMoveEventArgs e)
+		protected virtual void onBorderMouseEnter (object sender, MouseMoveEventArgs e)
 		{
 			hoverBorder = true;
 		}
