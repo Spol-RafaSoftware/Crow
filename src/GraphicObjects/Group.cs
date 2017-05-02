@@ -71,7 +71,7 @@ namespace Crow
 			g.RegisterForLayouting (LayoutingType.Sizing | LayoutingType.ArrangeChildren);
 			g.LayoutChanged += OnChildLayoutChanges;
 		}
-        public virtual void RemoveChild(GraphicObject child)        
+        public virtual void RemoveChild(GraphicObject child)
 		{
 			child.LayoutChanged -= OnChildLayoutChanges;
 			//child.Parent = null;
@@ -89,7 +89,7 @@ namespace Crow
 				searchLargestChild ();
 			if (child == tallestChild && Height == Measure.Fit)
 				searchTallestChild ();
-			
+
 			this.RegisterForLayouting (LayoutingType.Sizing | LayoutingType.ArrangeChildren);
         }
 		public virtual void ClearChildren()
@@ -109,16 +109,22 @@ namespace Crow
 			ChildrenCleared.Raise (this, new EventArgs ());
 		}
 
-//		public void putWidgetOnTop(GraphicObject w)
-//		{
-//			if (Children.Contains(w))
-//			{
-//				lock (children) {
-//					Children.Remove (w);
-//					Children.Add (w);
-//				}
-//			}
-//		}
+		public void PutWidgetOnTop(GraphicObject w)
+		{
+			if (this.ArrangeChildren) {
+				Debug.WriteLine ("Can't raise widget in group that has ArrangeChildren set to true.");
+				return;
+			}
+			if (Children.Contains(w))
+			{
+				lock (children) {
+					Children.Remove (w);
+					Children.Add (w);
+				}
+				lock (CurrentInterface.UpdateMutex)
+					CurrentInterface.EnqueueForRepaint (w);
+			}
+		}
 //		public void putWidgetOnBottom(GraphicObject w)
 //		{
 //			if (Children.Contains(w))
@@ -187,7 +193,7 @@ namespace Crow
 			}
 			return base.measureRawSize (lt);
 		}
-			
+
 		public override void OnLayoutChanges (LayoutingType layoutType)
 		{
 			base.OnLayoutChanges (layoutType);
@@ -338,7 +344,7 @@ namespace Crow
 			}
 		}
 
-	
+
 		#region Mouse handling
 		public override void checkHoverWidget (MouseMoveEventArgs e)
 		{
@@ -392,7 +398,7 @@ namespace Crow
 					if (t == null)
 						throw new Exception (subTree.Name + " type not found");
                     GraphicObject go = (GraphicObject)Activator.CreateInstance(t);
-                    (go as IXmlSerializable).ReadXml(subTree);                    
+                    (go as IXmlSerializable).ReadXml(subTree);
                     AddChild(go);
                 }
             }
@@ -408,7 +414,7 @@ namespace Crow
                 writer.WriteEndElement();
             }
         }
-    
+
 		#endregion
 
 	}
